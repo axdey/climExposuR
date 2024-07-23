@@ -31,7 +31,7 @@ flexi_percentile_cutoffs <- function(DT, var_col = "tmax",
     stop("DT must contain 'date', var_col, and psu_col columns")
   }
   
-  if (!(perc_type %in% c("crude", "rolling"))) stop("perc_type must be either 'crude' or 'rolling'")
+  if (!(perc_type %in% c("crude", "crude_doy", "rolling"))) stop("perc_type must be either 'crude', 'crude_doy' or 'rolling'")
   if (perc_type == "rolling" && missing(num_days)) stop("num_days must be specified if perc_type is 'rolling'")
 
   # Prepare data
