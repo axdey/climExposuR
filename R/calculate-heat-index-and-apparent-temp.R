@@ -9,6 +9,9 @@
 ### Default output is a data.frame of four columns: heat index in Fahrenheit/Celsius 
 ### and apparent temperature in Fahrenheit/Celsius, all replaced with air temperature when below 68 Fahrenheit
 ### The apparent temperature is weird when dew point temperature is below freezing thus not recommended
+
+#' @export
+
 heat_index <- function( 
   temperature, ## air temperature
   rh, ## percentage of relative humidity; NA if using dew point

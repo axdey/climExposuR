@@ -1,3 +1,5 @@
+#' @export
+
 # Function to create binary variables for exceedence above absolute and relative thresholds 
 func_calc_exceed_sum_count <- function(df, vec_threshold_abs, vec_varnames_perc, clim_var) {
   # Convert dataframes to data.tables if they aren't already 
@@ -27,6 +29,7 @@ func_calc_exceed_sum_count <- function(df, vec_threshold_abs, vec_varnames_perc,
   return(df)
 }
 
+#' @export
 # Function to calculate the sum and count of exceedances for each individual
 function_calc_sum_count_exceed <- function(df_input, df_target, start_date_var, add_days, subtract_days, psu_var) {
     # Ensure that the input and target dataframes are data.table

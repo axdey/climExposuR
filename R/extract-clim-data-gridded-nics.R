@@ -3,6 +3,7 @@
 #' @param sf_file The shapefile containing the areas of interest. Currently handles sf or SpatVect files. 
 #' @param admin_colname The name of the attribute in the shapefile that identifies the region
 #' for which the climate variable needs to be extracted (e.g. "Zip"). Use "full_region" if the data needs to be extracted for the entire region. 
+#' @export
 
 func_extract_clim_data_shp <- function(path_nic_files, 
                                         shape_file, 
@@ -93,6 +94,7 @@ func_extract_clim_data_shp <- function(path_nic_files,
 #' This function extracts dates from the nic files 
 #' @param path_nic_files The path to the folder containing the NIC files
 #' @return A vector of dates extracted from the NIC files
+#' @export
 
 func_extract_dates_nic <- function(path_nic_files) {
     # Step-0: List all the NIC files in the folder

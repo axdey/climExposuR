@@ -8,6 +8,7 @@
 #' @param psu_col The name of the column containing the geographic unit (default is 'Zip')
 #' @param num_cores_leave The number of cores to leave for other processes (default is 1)
 #' @return The input data.table with an additional column 'percentile' containing the rolling/crude percentile
+#' @export
 
 
 # Function to calculate percentiles for a time series 'flexibly' considering dates and rolling windows

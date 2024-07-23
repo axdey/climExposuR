@@ -1,0 +1,2 @@
+^climExposuR\.Rproj$
+^\.Rproj\.user$
