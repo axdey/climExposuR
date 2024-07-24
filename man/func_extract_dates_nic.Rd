@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract-clim-data-gridded-nics.R
 \name{func_extract_dates_nic}
 \alias{func_extract_dates_nic}
-\title{This function extracts dates from the nic files}
+\title{Extract dates from NIC files}
 \usage{
 func_extract_dates_nic(path_nic_files)
 }

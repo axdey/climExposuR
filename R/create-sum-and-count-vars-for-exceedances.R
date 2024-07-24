@@ -1,6 +1,14 @@
+#' @name func_calc_exceed_sum_count
+#' @title Calculate the sum and count of exceedances for each individual
+#' @description This function calculates the sum and count of exceedances for each individual based on absolute and percentile thresholds.
+#' @param df A data.table object with columns: date, tmax, extreme_event, and exceedance.
+#' @param vec_threshold_abs A vector of absolute thresholds.
+#' @param vec_varnames_perc A vector of percentile thresholds.
+#' @param clim_var The name of the climate variable.
+#' @return A data.table object with sum and count variables for exceedances.
+#' @import data.table dplyr lubridate
 #' @export
 
-# Function to create binary variables for exceedence above absolute and relative thresholds 
 func_calc_exceed_sum_count <- function(df, vec_threshold_abs, vec_varnames_perc, clim_var) {
   # Convert dataframes to data.tables if they aren't already 
   !is.data.table(df) && setDT(df)
@@ -28,9 +36,10 @@ func_calc_exceed_sum_count <- function(df, vec_threshold_abs, vec_varnames_perc,
   }
   return(df)
 }
-
+#' @name function_calc_sum_count_exceed
+#' @title Calculate the sum and count of exceedances for each individual
 #' @export
-# Function to calculate the sum and count of exceedances for each individual
+
 function_calc_sum_count_exceed <- function(df_input, df_target, start_date_var, add_days, subtract_days, psu_var) {
     # Ensure that the input and target dataframes are data.table
     setDT(df_input)

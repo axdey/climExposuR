@@ -1,5 +1,5 @@
-#' @title func_per_flexity 
-#' @description Calculate the rolling percentile for each date and geographic unit (e.g. Zip/psu)
+#' @name func_per_flexity 
+#' @title Calculate the rolling percentile for each date and geographic unit (e.g. Zip/psu)
 #' @param DT A data.table or dataframe with columns 'date', variable of interest (e.g. tmax), and the geographic unit (e.g. Zip/PSU)
 #' @param var_col The name of the column containing the variable of interest
 #' @param ntile The percentile to calculate (default is 0.9)
@@ -8,6 +8,7 @@
 #' @param psu_col The name of the column containing the geographic unit (default is 'Zip')
 #' @param num_cores_leave The number of cores to leave for other processes (default is 1)
 #' @return The input data.table with an additional column 'percentile' containing the rolling/crude percentile
+#' @import data.table dplyr lubridate parallel foreach doParallel
 #' @export
 
 

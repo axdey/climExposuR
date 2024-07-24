@@ -9,17 +9,28 @@
 ### Default output is a data.frame of four columns: heat index in Fahrenheit/Celsius 
 ### and apparent temperature in Fahrenheit/Celsius, all replaced with air temperature when below 68 Fahrenheit
 ### The apparent temperature is weird when dew point temperature is below freezing thus not recommended
+#' @name heat_index
+#' @title Calculate heat index and apparent temperature
+#' @param temperature Air temperature in Fahrenheit or Celsius
+#' @param rh Relative humidity in percentage (0-100) or NA if using dew point
+#' @param dewpoint Dew point temperature in Fahrenheit or Celsius or NA if using relative humidity
+#' @param dp TRUE or FALSE; TRUE if dew point temperature is used
+#' @param t_f TRUE or FALSE; TRUE if air temperature is provided in Fahrenheit
+#' @param dp_f TRUE or FALSE; TRUE if dew point temperature is provided in Fahrenheit
+#' @param rh_original TRUE or FALSE; TRUE if relative humidity ranges from 0 to 1 and will be transformed to a range of 0 to 100
+#' @return A data.frame of heat index in Fahrenheit/Celsius and apparent temperature in Fahrenheit/Celsius
+#' @import data.table dplyr
 
 #' @export
 
 heat_index <- function( 
-  temperature, ## air temperature
-  rh, ## percentage of relative humidity; NA if using dew point
-  dewpoint, ## dew point temperature; NA if using relative humidity
-  dp, ## TRUE or FALSE; TRUE if dew point temperature is used
-  t_f, ## TRUE or FALSE; if TRUE, air temperature is provided in Fahrenheit
-  dp_f, ## TRUE or FALSE; if TRUE, dew point temperature is provided in Fahrenheit
-  rh_original ## TRUE or FALSE; if TURE, relative humidity ranges from 0 to 1 and will be transformed to a range of 0 to 100
+  temperature, 
+  rh, 
+  dewpoint, 
+  dp, 
+  t_f, 
+  dp_f, 
+  rh_original 
 ) {
   ## get temperature in right unit
   if (t_f) {

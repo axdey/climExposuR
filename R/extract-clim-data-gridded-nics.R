@@ -1,9 +1,15 @@
-#' This function extracts climate data from a nic file for a given shapefile and attribute
+#' @name func_calc_sum_count_exceed
+#' @title Calculate the sum and count of exceedances for each individual
+#' @description This function extracts climate data from a nic file for a given shapefile and attribute
 #' @param path_nic_files The path to the folder containing the NIC files
 #' @param sf_file The shapefile containing the areas of interest. Currently handles sf or SpatVect files. 
 #' @param admin_colname The name of the attribute in the shapefile that identifies the region
 #' for which the climate variable needs to be extracted (e.g. "Zip"). Use "full_region" if the data needs to be extracted for the entire region. 
+#' @param var_name The name of the climate variable to be extracted (e.g. "tmax_noaa")
+#' @return A data frame containing the extracted climate data for the areas of interest
+#' @import terra lubridate
 #' @export
+
 
 func_extract_clim_data_shp <- function(path_nic_files, 
                                         shape_file, 
@@ -90,8 +96,9 @@ func_extract_clim_data_shp <- function(path_nic_files,
         return(results_df)
 }
 
-
-#' This function extracts dates from the nic files 
+#' @name func_extract_dates_nic
+#' @title Extract dates from NIC files
+#' @description This function extracts dates from the nic files 
 #' @param path_nic_files The path to the folder containing the NIC files
 #' @return A vector of dates extracted from the NIC files
 #' @export
