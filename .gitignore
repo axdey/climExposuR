@@ -54,3 +54,6 @@ data/
 
 # Outputs
 outputs/
+
+# Dummy files
+dummy*.R

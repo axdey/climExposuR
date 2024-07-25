@@ -1,46 +1,67 @@
 #' @name func_calc_exceed_sum_count
 #' @title Calculate the sum and count of exceedances for each individual
-#' @description This function calculates the sum and count of exceedances for each individual based on absolute and percentile thresholds.
+#' @description This function takes a time series and identifies days that exceed a threshold. It also calculates the magnitude of exceedances for each day.
 #' @param df A data.table object with columns: date, tmax, extreme_event, and exceedance.
-#' @param vec_threshold_abs A vector of absolute thresholds.
-#' @param vec_varnames_perc A vector of percentile thresholds.
+#' @param vec_threshold_abs A vector of absolute thresholds. Can also be NULL.
+#' @param vec_varnames_perc A vector of percentile thresholds. Can also be NULL.
 #' @param clim_var The name of the climate variable.
 #' @return A data.table object with sum and count variables for exceedances.
 #' @import data.table dplyr lubridate
 #' @export
-
-func_calc_exceed_sum_count <- function(df, vec_threshold_abs, vec_varnames_perc, clim_var) {
+func_ident_mag_calc_mag <- function(df, vec_threshold_abs, vec_varnames_perc, clim_var) {
   # Convert dataframes to data.tables if they aren't already 
   !is.data.table(df) && setDT(df)
     
-  # Calculate exceedances and count crossings for each threshold 
-  ## Based on absolute values
-  for (threshold in vec_threshold_abs) {
-    exceed_col <- paste0("exceed_abs_", threshold)
-    count_col <- paste0("count_abs_", threshold)
-    df[, c(exceed_col, count_col) := .(
-      fifelse(get(clim_var) >= threshold, get(clim_var) - threshold, 0),
-      fifelse(get(clim_var) >= threshold, 1, 0)
-    )]
+  # Ensure that the date column is a Date object
+  df[, date := as.Date(date)]
+
+  # Ensure that one of vec_threshold_abs and vec_varnames_perc are non-NULL
+  if (is.null(vec_threshold_abs) && is.null(vec_varnames_perc)) {
+    stop("At least one of vec_threshold_abs and vec_varnames_perc must be non-NULL")
   }
-  
-  ## Based on percentile values
-  for (var in vec_varnames_perc) {
-    threshold_name <- sub("cutoff_", "", var)
-    exceed_col <- paste0("exceed_perc_", threshold_name)
-    count_col <- paste0("count_perc_", threshold_name)
-    df[, c(exceed_col, count_col) := .(
-      fifelse(get(clim_var) >= get(var), get(clim_var) - get(var), 0),
-      fifelse(get(clim_var) >= get(var), 1, 0)
-    )]
+
+  # Identify exceedances and calculate magnitude for each threshold 
+  ## Based on absolute values if vec_threshold_abs is not NULL
+  if (!is.null(vec_threshold_abs)) {
+    for (threshold in vec_threshold_abs) {
+      ident_col <- paste0("ident_abs_", threshold)
+      mag_col <- paste0("mag_abs_", threshold)
+      df[, c(ident_col, mag_col) := .(
+        fifelse(get(clim_var) >= threshold, 1, 0),
+        fifelse(get(clim_var) >= threshold, get(clim_var) - threshold, 0)
+      )]
+    }
+  }  
+  ## Based on percentile values if vec_varnames_perc is not NULL
+  if (!is.null(vec_varnames_perc)) {
+    for (var in vec_varnames_perc) {
+      threshold_name <- sub("cutoff_", "", var)
+      ident_col <- paste0("ident_perc_", threshold_name)
+      mag_col <- paste0("mag_perc_", threshold_name)
+      df[, c(ident_col, mag_col) := .(
+        fifelse(get(clim_var) >= get(var), 1, 0),
+        fifelse(get(clim_var) >= get(var), get(clim_var) - get(var), 0)
+      )]
+    }
   }
   return(df)
 }
+
+
 #' @name function_calc_sum_count_exceed
-#' @title Calculate the sum and count of exceedances for each individual
+#' @title Calculate the sum and count of exceedances for each individual for a specific period
+#' @description This function calculates the sum and count of exceedances for each individual for a specific period
+#' @param df_input A data.table object with columns: date, tmax, extreme_event, and exceedance.
+#' @param df_target A data.table object with columns: start_date_var, psu_var, add_days, and subtract_days.
+#' @param start_date_var The name of the start date variable.
+#' @param add_days The number of days to add to the start date. Cant be NULL if subtract_days is NULL.
+#' @param subtract_days The number of days to subtract from the start date. Cant be NULL if add_days is NULL.
+#' @param psu_var The name of the PSU variable.
+#' @return A data.table object with sum and count variables for exceedances.
+#' @import data.table
 #' @export
 
-function_calc_sum_count_exceed <- function(df_input, df_target, start_date_var, add_days, subtract_days, psu_var) {
+func_calc_sum_count_exceed_period <- function(df_input, df_target, start_date_var, add_days, subtract_days, psu_var) {
     # Ensure that the input and target dataframes are data.table
     setDT(df_input)
     setDT(df_target)
@@ -64,7 +85,7 @@ function_calc_sum_count_exceed <- function(df_input, df_target, start_date_var, 
     }
 
     # Identify 'exceed' and 'count' columns
-    cols_exceed_or_count <- grep("^exceed|^count", names(df_input), value = TRUE)
+    cols_ident_or_mag <- grep("^mag|^ident", names(df_input), value = TRUE)
 
     # Calculate the sum for each individual
     result <- df_input[df_target, 
@@ -72,22 +93,16 @@ function_calc_sum_count_exceed <- function(df_input, df_target, start_date_var, 
           .(row_id = row_id)),
         by = .EACHI, 
         on = .(psu, date >= start_date, date <= end_date),
-        .SDcols = cols_exceed_or_count
+        .SDcols = cols_ident_or_mag
     ][, !"date"]
 
     # Rename the sum columns
-    setnames(result, cols_exceed_or_count, paste0("sum_", cols_exceed_or_count))
+    setnames(result, cols_ident_or_mag, paste0("sum_", cols_ident_or_mag))
 
     # Merge result back to the target dataframe
     df_target[result, names(result) := mget(paste0("i.", names(result))), on = "row_id"]
     df_target[, row_id := NULL]
-
-    # Identify columns starting with "sum"
-    sum_cols <- grep("^sum", names(df_target), value = TRUE)
-
-    # Scale the sum columns and create new columns with "_scale" suffix
-    df_target[, (paste0(sum_cols, "_scale")) := lapply(.SD, scale), .SDcols = sum_cols]
-
+    
     return(df_target)
 }
 

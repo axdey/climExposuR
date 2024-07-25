@@ -2,9 +2,10 @@
 % Please edit documentation in R/create-sum-and-count-vars-for-exceedances.R
 \name{function_calc_sum_count_exceed}
 \alias{function_calc_sum_count_exceed}
-\title{Calculate the sum and count of exceedances for each individual}
+\alias{func_calc_sum_count_exceed_period}
+\title{Calculate the sum and count of exceedances for each individual for a specific period}
 \usage{
-function_calc_sum_count_exceed(
+func_calc_sum_count_exceed_period(
   df_input,
   df_target,
   start_date_var,
@@ -13,6 +14,22 @@ function_calc_sum_count_exceed(
   psu_var
 )
 }
+\arguments{
+\item{df_input}{A data.table object with columns: date, tmax, extreme_event, and exceedance.}
+
+\item{df_target}{A data.table object with columns: start_date_var, psu_var, add_days, and subtract_days.}
+
+\item{start_date_var}{The name of the start date variable.}
+
+\item{add_days}{The number of days to add to the start date. Cant be NULL if subtract_days is NULL.}
+
+\item{subtract_days}{The number of days to subtract from the start date. Cant be NULL if add_days is NULL.}
+
+\item{psu_var}{The name of the PSU variable.}
+}
+\value{
+A data.table object with sum and count variables for exceedances.
+}
 \description{
-Calculate the sum and count of exceedances for each individual
+This function calculates the sum and count of exceedances for each individual for a specific period
 }
