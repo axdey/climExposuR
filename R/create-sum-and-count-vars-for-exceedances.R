@@ -1,4 +1,4 @@
-#' @name func_calc_exceed_sum_count
+#' @name func_ident_mag_calc_mag
 #' @title Calculate the sum and count of exceedances for each individual
 #' @description This function takes a time series and identifies days that exceed a threshold. It also calculates the magnitude of exceedances for each day.
 #' @param df A data.table object with columns: date, tmax, extreme_event, and exceedance.
@@ -48,7 +48,7 @@ func_ident_mag_calc_mag <- function(df, vec_threshold_abs, vec_varnames_perc, cl
 }
 
 
-#' @name function_calc_sum_count_exceed
+#' @name func_calc_sum_count_exceed_period
 #' @title Calculate the sum and count of exceedances for each individual for a specific period
 #' @description This function calculates the sum and count of exceedances for each individual for a specific period
 #' @param df_input A data.table object with columns: date, tmax, extreme_event, and exceedance.

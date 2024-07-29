@@ -1,4 +1,4 @@
-#' @name func_per_flexity 
+#' @name flexi_percentile_cutoffs 
 #' @title Calculate the rolling percentile for each date and geographic unit (e.g. Zip/psu)
 #' @param DT A data.table or dataframe with columns 'date', variable of interest (e.g. tmax), and the geographic unit (e.g. Zip/PSU)
 #' @param var_col The name of the column containing the variable of interest
