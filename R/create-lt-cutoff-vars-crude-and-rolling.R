@@ -8,7 +8,28 @@
 #' @param psu_col The name of the column containing the geographic unit (default is 'Zip')
 #' @param num_cores_leave The number of cores to leave for other processes (default is 1)
 #' @return The input data.table with an additional column 'percentile' containing the rolling/crude percentile
-#' @import data.table dplyr lubridate parallel foreach doParallel
+#' @importFrom data.table as.data.table is.data.table data.table
+#' @importFrom parallel detectCores makeCluster stopCluster
+#' @importFrom foreach foreach %dopar%
+#' @importFrom doParallel registerDoParallel
+#' @importFrom lubridate yday
+#' @importFrom stats quantile
+#' 
+#'@examples
+#' \dontrun{
+#' library(data.table)
+#' set.seed(123)
+#' dates <- seq(as.Date("1995-01-01"), as.Date("2002-12-31"), by = "day")
+#' zips <- c("90210", "10001")
+#' DT <- data.table(
+#'   date = rep(dates, each = length(zips)),
+#'   Zip = rep(zips, times = length(dates)),
+#'   tmax = runif(length(dates) * length(zips), 20, 45)
+#' )
+#' flexi_percentile_cutoffs(DT = DT, var_col = "tmax", ntile = 0.9, perc_type = "crude", psu_col = "Zip")
+#' flexi_percentile_cutoffs(DT = DT, var_col = "tmax", ntile = 0.9, perc_type = "rolling", num_days = 3, psu_col = "Zip")
+#' }
+#'
 #' @export
 
 
@@ -88,17 +109,4 @@ flexi_percentile_cutoffs <- function(DT, var_col = "tmax",
   
   return(results)
 }
-
-# Example Usage
-# library(data.table)
-# set.seed(123)
-# dates <- seq(as.Date("1995-01-01"), as.Date("2002-12-31"), by = "day")
-# zips <- c("90210", "10001")
-# DT <- data.table(
-#   date = rep(dates, each = length(zips)),
-#   Zip = rep(zips, times = length(dates)),
-#   tmax = runif(length(dates) * length(zips), 20, 45)
-# )
-# flexi_percentile_cutoffs(DT = DT, var_col = "tmax", ntile = 0.9, perc_type = "crude", psu_col = "Zip")
-# flexi_percentile_cutoffs(DT = DT, var_col = "tmax", ntile = 0.9, perc_type = "rolling", num_days = 3, psu_col = "Zip")
 

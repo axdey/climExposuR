@@ -19,8 +19,8 @@
 #' @param dp_f TRUE or FALSE; TRUE if dew point temperature is provided in Fahrenheit
 #' @param rh_original TRUE or FALSE; TRUE if relative humidity ranges from 0 to 1 and will be transformed to a range of 0 to 100
 #' @return A data.frame of heat index in Fahrenheit/Celsius and apparent temperature in Fahrenheit/Celsius
-#' @import data.table dplyr
-
+#' @importFrom stats setNames
+#' @importFrom utils data
 #' @export
 
 heat_index <- function( 

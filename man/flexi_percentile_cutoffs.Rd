@@ -35,3 +35,19 @@ The input data.table with an additional column 'percentile' containing the rolli
 \description{
 Calculate the rolling percentile for each date and geographic unit (e.g. Zip/psu)
 }
+\examples{
+\dontrun{
+library(data.table)
+set.seed(123)
+dates <- seq(as.Date("1995-01-01"), as.Date("2002-12-31"), by = "day")
+zips <- c("90210", "10001")
+DT <- data.table(
+  date = rep(dates, each = length(zips)),
+  Zip = rep(zips, times = length(dates)),
+  tmax = runif(length(dates) * length(zips), 20, 45)
+)
+flexi_percentile_cutoffs(DT = DT, var_col = "tmax", ntile = 0.9, perc_type = "crude", psu_col = "Zip")
+flexi_percentile_cutoffs(DT = DT, var_col = "tmax", ntile = 0.9, perc_type = "rolling", num_days = 3, psu_col = "Zip")
+}
+
+}

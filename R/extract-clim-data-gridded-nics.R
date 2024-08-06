@@ -8,7 +8,11 @@
 #' @param sf_file_admin Administrative variable in the shape file
 #' @return A data frame with the extracted climate data
 #' @examples see below
-#' @import terra lubridate
+#' @importFrom terra vect rast ext rotate crop extract
+#' @importFrom sf st_transform
+#' @importFrom ncdf4 nc_open ncvar_get ncatt_get nc_close
+#' @importFrom lubridate as.Date dseconds dminutes dhours
+#' @importFrom dplyr select
 #' @export
 
 

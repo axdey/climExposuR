@@ -5,7 +5,7 @@
 #' @param var_cutoff The name of the variable indicating the extreme event (default: "extreme_event").
 #' @param var_exceed The name of the variable indicating the exceedance (default: "exceedance").
 #' @return A data.table object with summarized extreme events.
-#' @import data.table dplyr lubridate
+#' @importFrom data.table setDT :=
 #' @export
 
 ted_events <- function(df,
