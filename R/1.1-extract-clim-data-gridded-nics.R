@@ -15,7 +15,6 @@
 #' @importFrom dplyr select
 #' @export
 
-
 func_extract_clim_data_shp <- function(path_nic_files, 
                                        sf_file, 
                                        sf_file_admin) {
