@@ -58,8 +58,9 @@ func_calc_bins_period <- function(df_health, df_lt_clim,
     return(df_health)
 }
 
-#' @name func_calc_sum_count_max_period
-#' @description This function calculates the sum, count, and max of a climatic variable from a climate time series dataframe within a period for a corresponding health data.
+#' @name func_calc_descr_period
+#' @title Calculate various descriptive statistics for a climatic variable from a time series dataframe within a period for a corresponding health data
+#' @description This function calculates various descriptive statistics for a climatic variable from a time series dataframe within a period for a corresponding health data.
 #' Note: the psu vars need to have the same name in both data.tables and both need to be the same data type.
 #' @param df_lt_clim A data.table containing the long-term climatic data
 #' @param df_health A data.table containing the health data
@@ -70,10 +71,12 @@ func_calc_bins_period <- function(df_health, df_lt_clim,
 #' @param sum A logical indicating whether to calculate the sum (default: TRUE), Can be set to FALSE to skip the calculation
 #' @param count_non_zero A logical indicating whether to calculate the count of non-zero values (default: TRUE), Can be set to FALSE to skip the calculation
 #' @param max A logical indicating whether to calculate the max (default: TRUE), Can be set to FALSE to skip the calculation
+#' @param count_d A logical indicating whether to calculate the count of a specific value (default: FALSE), Can be set to TRUE to calculate the count of a specific value
+#' @param d A numeric value specifying the value to count. Must only be provided if count_d is TRUE.
 #' @param vec_identifiers A character vector containing the identifiers of the columns to calculate the sum, count, and max
 #' @example 
 #' vec_identifiers <- c("consec")
-#' df_test <- func_calc_sum_count_max_period(
+#' df_test <- func_calc_descr_period(
 #'     df_lt_clim = df_lt_vars_2014, 
 #'     df_health = df_anc_3mo, 
 #'     start_date_var = "dob", 
@@ -84,12 +87,14 @@ func_calc_bins_period <- function(df_health, df_lt_clim,
 #'     sum = TRUE,
 #'     count_non_zero = TRUE,
 #'     max = FALSE
+#'     cound_d = TRUE,
+#'     d = 5
 #' )
 #' @importFrom data.table setDT := .I .EACHI
 #' @importFrom lubridate as.Date 
 #' @export
 
-func_calc_sum_count_max_period <- function(
+func_calc_descr_period <- function(
     df_lt_clim, 
     df_health, 
     start_date_var, 
@@ -98,6 +103,8 @@ func_calc_sum_count_max_period <- function(
     sum = TRUE,
     count_non_zero = TRUE,
     max = TRUE,
+    count_d = FALSE,
+    d = NULL,
     vec_identifiers) {
     
     # Ensure that the input and target dataframes are data.table
@@ -150,6 +157,21 @@ func_calc_sum_count_max_period <- function(
         setnames(calculations$sum, cols_of_interest, paste0("sum_", cols_of_interest))
     }
     
+    ## Max
+    if (max) {
+        calculations$max <- df_lt_clim[df_health, 
+            c(lapply(.SD, function(x) {
+                mx <- max(x, na.rm = TRUE)
+                if (is.finite(mx)) mx else NA_real_
+            }),
+            .(row_id = row_id)),
+            by = .EACHI, 
+            on = .(psu, date >= start_date, date <= end_date),
+            .SDcols = cols_of_interest
+        ][, !"date"]
+        setnames(calculations$max, cols_of_interest, paste0("max_", cols_of_interest))
+    }
+
     ## Count non-zero
     if (count_non_zero) {
         calculations$count <- df_lt_clim[df_health, 
@@ -164,20 +186,23 @@ func_calc_sum_count_max_period <- function(
         ][, !"date"]
         setnames(calculations$count, cols_of_interest, paste0("count_", cols_of_interest))
     }
-    
-    ## Max
-    if (max) {
-        calculations$max <- df_lt_clim[df_health, 
+
+    ## Count = x
+    if (count_d) {
+        if (is.null(d) || !is.numeric(d)) {
+            stop("value of d must be provided and must be numeric")
+        }
+        calculations$count_d <- df_lt_clim[df_health, 
             c(lapply(.SD, function(x) {
-                mx <- max(x, na.rm = TRUE)
-                if (is.finite(mx)) mx else NA_real_
+                count_d <- sum(x == d, na.rm = TRUE)
+                if (is.finite(count_d)) as.integer(count_d) else NA_integer_
             }),
             .(row_id = row_id)),
             by = .EACHI, 
             on = .(psu, date >= start_date, date <= end_date),
             .SDcols = cols_of_interest
         ][, !"date"]
-        setnames(calculations$max, cols_of_interest, paste0("max_", cols_of_interest))
+        setnames(calculations$count_d, cols_of_interest, paste0("count_d_", cols_of_interest))
     }
     
     # Combine all results

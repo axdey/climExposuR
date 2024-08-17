@@ -3,7 +3,7 @@
 export(create_heatwave_vars)
 export(flexi_percentile_cutoffs)
 export(func_calc_bins_period)
-export(func_calc_sum_count_max_period)
+export(func_calc_descr_period)
 export(func_extract_clim_data_shp)
 export(func_ident_mag_calc_mag)
 export(harmonic_ols_regression)
