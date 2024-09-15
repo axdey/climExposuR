@@ -4,7 +4,15 @@
 \alias{func_extract_clim_data_shp}
 \title{Extract climate data for a shape file}
 \usage{
-func_extract_clim_data_shp(path_nic_files, sf_file, sf_file_admin)
+func_extract_clim_data_shp(
+  path_nic_files,
+  sf_file,
+  sf_file_admin,
+  reference_date = "1900-01-01",
+  file_frequency = "daily",
+  start_index = 1,
+  end_index = NULL
+)
 }
 \arguments{
 \item{path_nic_files}{Path to the NetCDF files}
@@ -12,6 +20,14 @@ func_extract_clim_data_shp(path_nic_files, sf_file, sf_file_admin)
 \item{sf_file}{Shape file}
 
 \item{sf_file_admin}{Administrative variable in the shape file}
+
+\item{reference_date}{Reference date for the climate data}
+
+\item{file_frequency}{Frequency of the climate data}
+
+\item{start_index}{Start index of the NetCDF files}
+
+\item{end_index}{End index of the NetCDF files}
 }
 \value{
 A data frame with the extracted climate data
@@ -20,7 +36,4 @@ A data frame with the extracted climate data
 This function extracts climate data for a shape file.
 The function reads the NetCDF files, extracts the climate data for each area of interest, and compiles the mean climate for each day.
 The function assumes that the climate data is daily and works only for regions like Zip codes, states, or countries.
-}
-\examples{
-see below
 }
