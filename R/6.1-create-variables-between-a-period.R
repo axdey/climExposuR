@@ -57,7 +57,7 @@ func_calc_bins_period <- function(df_health, df_lt_clim,
     
     return(df_health)
 }
-
+devtools::install_github("axdey/climExposuR")
 #' @name func_calc_descr_period
 #' @title Calculate various descriptive statistics for a climatic variable from a time series dataframe within a period for a corresponding health data
 #' @description This function calculates various descriptive statistics for a climatic variable from a time series dataframe within a period for a corresponding health data.
