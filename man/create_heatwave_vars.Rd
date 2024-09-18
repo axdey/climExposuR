@@ -33,3 +33,15 @@ A data.table object with heatwave variables.
 This function creates heatwave variables based on the specified threshold values and consecutive days.
 Note that threshold values need to be passed as variables, which makes this function more flexible to be used with absolute as well as relative threshold values.
 }
+\examples{
+\dontrun{
+df_lt_vars_2014 <- read_fst(here(path_project, "processed-data", "1.5.1-df_psu_wbgt_2014.fst"), as.data.table = T)
+Note: This dataset is from my dissertation project dataset and is not available for public use.
+df_lt_vars_2014$cutoff_abs_28 <- 28
+df_lt_vars_2014$cutoff_abs_30 <- 30
+df_lt_vars_2014$cutoff_abs_32 <- 32
+vec_threshold_vars <- c("cutoff_abs_28", "cutoff_abs_30", "cutoff_abs_32")
+vec_consec_days <- c(2, 3, 4, 5)
+df_wbgt_hw_vars <- create_heatwave_vars(df_lt_vars_2014, vec_threshold_vars, vec_consec_days, date_var = "date", clim_var = "max_temp_wb", psu_var = "psu")
+}
+}

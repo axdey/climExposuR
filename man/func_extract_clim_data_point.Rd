@@ -2,9 +2,7 @@
 % Please edit documentation in R/1.2-extract-clim-data-for-points.R
 \name{func_extract_clim_data_point}
 \alias{func_extract_clim_data_point}
-\title{Extract climate data for a point shape file
-The function reads the NetCDF files, extracts the climate data for each point of interest, and compiles the mean climate for each day.
-The function assumes that the climate data is daily and works only for point shape files like DHS data.}
+\title{Extract climate data for a point shape file}
 \usage{
 func_extract_clim_data_point(
   path,

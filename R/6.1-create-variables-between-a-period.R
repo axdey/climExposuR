@@ -12,8 +12,8 @@
 #' @param clim_var A character string specifying the column name of the climatic variable
 #' @return A data.table containing the health data with the number of instances for each bin
 #' @importFrom data.table setDT := .I .EACHI
-#' @importFrom lubridate as.Date 
 #' @export
+
 
 func_calc_bins_period <- function(df_health, df_lt_clim,
                                   start_date_var, add_days, subtract_days, 
@@ -74,7 +74,8 @@ devtools::install_github("axdey/climExposuR")
 #' @param count_d A logical indicating whether to calculate the count of a specific value (default: FALSE), Can be set to TRUE to calculate the count of a specific value
 #' @param d A numeric value specifying the value to count. Must only be provided if count_d is TRUE.
 #' @param vec_identifiers A character vector containing the identifiers of the columns to calculate the sum, count, and max
-#' @example 
+#' @examples
+#'  \dontrun{
 #' vec_identifiers <- c("consec")
 #' df_test <- func_calc_descr_period(
 #'     df_lt_clim = df_lt_vars_2014, 
@@ -88,10 +89,9 @@ devtools::install_github("axdey/climExposuR")
 #'     count_non_zero = TRUE,
 #'     max = FALSE
 #'     cound_d = TRUE,
-#'     d = 5
-#' )
+#'     d = 5)
+#' }
 #' @importFrom data.table setDT := .I .EACHI
-#' @importFrom lubridate as.Date 
 #' @export
 
 func_calc_descr_period <- function(

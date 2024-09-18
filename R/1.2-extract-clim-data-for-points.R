@@ -1,4 +1,6 @@
-#' Extract climate data for a point shape file
+#' @title Extract climate data for a point shape file
+#' @name func_extract_clim_data_point
+#' @description Extract climate data for a point shape file
 #' The function reads the NetCDF files, extracts the climate data for each point of interest, and compiles the mean climate for each day.
 #' The function assumes that the climate data is daily and works only for point shape files like DHS data.
 #' @param path Path to the NetCDF files
@@ -10,8 +12,7 @@
 #' @return A data frame with the extracted climate data
 #' @importFrom terra rast crop mask extract
 #' @importFrom data.table data.table
-#' @importFrom sf as.data.frame
-#' @importFrom lubridate as.Date dseconds dminutes dhours
+#' @importFrom lubridate dseconds dminutes dhours
 #' @importFrom reshape2 melt
 #' @importFrom ncdf4 nc_open ncvar_get ncatt_get nc_close
 #' @export

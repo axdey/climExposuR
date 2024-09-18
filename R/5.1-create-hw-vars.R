@@ -18,6 +18,7 @@
 #' vec_threshold_vars <- c("cutoff_abs_28", "cutoff_abs_30", "cutoff_abs_32")
 #' vec_consec_days <- c(2, 3, 4, 5)
 #' df_wbgt_hw_vars <- create_heatwave_vars(df_lt_vars_2014, vec_threshold_vars, vec_consec_days, date_var = "date", clim_var = "max_temp_wb", psu_var = "psu")
+#' }
 #' @export create_heatwave_vars
 #' @importFrom data.table setDT setkeyv rleid
 

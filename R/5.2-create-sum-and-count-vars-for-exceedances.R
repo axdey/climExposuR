@@ -7,7 +7,6 @@
 #' @param clim_var The name of the climate variable.
 #' @return A data.table object with sum and count variables for exceedances.
 #' @importFrom data.table is.data.table setDT :=
-#' @importFrom lubridate as.Date 
 #' @export
 func_ident_mag_calc_mag <- function(df, vec_threshold_abs, vec_varnames_perc, clim_var) {
   # Convert dataframes to data.tables if they aren't already 

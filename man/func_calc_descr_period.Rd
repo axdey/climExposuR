@@ -48,3 +48,21 @@ func_calc_descr_period(
 This function calculates various descriptive statistics for a climatic variable from a time series dataframe within a period for a corresponding health data.
 Note: the psu vars need to have the same name in both data.tables and both need to be the same data type.
 }
+\examples{
+ \dontrun{
+vec_identifiers <- c("consec")
+df_test <- func_calc_descr_period(
+    df_lt_clim = df_lt_vars_2014, 
+    df_health = df_anc_3mo, 
+    start_date_var = "dob", 
+    add_days = NULL,
+    subtract_days = 7, 
+    psu_var = "psu",
+    vec_identifiers = vec_identifiers,
+    sum = TRUE,
+    count_non_zero = TRUE,
+    max = FALSE
+    cound_d = TRUE,
+    d = 5)
+}
+}
